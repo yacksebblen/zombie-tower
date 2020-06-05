@@ -12,6 +12,7 @@ namespace Com.Jackseb.Zombie
 
 		private void Start()
 		{
+			Camera.main.enabled = false;
 			rig = GetComponent<Rigidbody>();
 		}
 
