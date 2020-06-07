@@ -18,8 +18,8 @@ namespace Com.Jackseb.Zombie
 
 		void FixedUpdate()
 		{
-			float _hMove = Input.GetAxis("Horizontal");
-			float _vMove = Input.GetAxis("Vertical");
+			float _hMove = Input.GetAxisRaw("Horizontal");
+			float _vMove = Input.GetAxisRaw("Vertical");
 
 			Vector3 _direction = new Vector3(_hMove, 0, _vMove);
 			_direction.Normalize();
