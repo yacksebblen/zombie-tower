@@ -10,6 +10,7 @@ namespace Com.Jackseb.Zombie
 
 		public Transform player;
 		public Transform cams;
+		public Transform weapon;
 
 		public float sensitivity;
 		public float maxAngle;
@@ -39,6 +40,8 @@ namespace Com.Jackseb.Zombie
 			{
 				cams.localRotation = _delta;
 			}
+
+			weapon.rotation = cams.rotation;
 		}
 
 		void SetX()
