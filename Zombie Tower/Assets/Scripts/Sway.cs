@@ -9,19 +9,19 @@ namespace Com.Jackseb.Zombie
 		public float intensity;
 		public float smooth;
 
-		private Quaternion originRotation;
+		Quaternion originRotation;
 
-		private void Start()
+		void Start()
 		{
 			originRotation = transform.localRotation;
 		}
 
-		private void Update()
+		void Update()
 		{
 			UpdateSway();
 		}
 
-		private void UpdateSway()
+		void UpdateSway()
 		{
 			// Controls
 			float _xMouse = Input.GetAxis("Mouse X");

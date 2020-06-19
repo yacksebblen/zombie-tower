@@ -2,39 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace Com.Jackseb.Zombie
 {
-    public enum State
+	public class GameManager : MonoBehaviour
 	{
-		Pregame,
-		NewFloor,
-		Zombies,
-		PVP,
-		Elevator
-	}
+		public enum State
+		{
+			Pregame,
+			NewFloor,
+			Zombies,
+			PVP,
+			Elevator
+		}
 
-	public State currentState;
+		public State currentState;
 
-	public GameObject playerPrefab;
-	public Transform spawnPoint;
+		public GameObject playerPrefab;
+		public Transform[] spawnPoints;
 
-	[SerializeField]
-	bool spawnPlayer;
-	
-    void Start()
-    {
-		currentState = State.Pregame;
+		[SerializeField]
+		bool spawnPlayer = true;
 
-		if (spawnPlayer) Spawn();
-	}
+		void Start()
+		{
+			currentState = State.Pregame;
 
-    void Update()
-    {
-        
-    }
+			if (spawnPlayer) Spawn();
+		}
 
-	public void Spawn()
-	{
-		Instantiate(playerPrefab, spawnPoint.position, spawnPoint.localRotation);
+		void Update()
+		{
+
+		}
+
+		public void Spawn()
+		{
+			int num = Random.Range(0, 3);
+			Instantiate(playerPrefab, spawnPoints[num].position, spawnPoints[num].rotation);
+		}
 	}
 }

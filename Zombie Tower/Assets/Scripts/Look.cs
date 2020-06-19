@@ -15,7 +15,7 @@ namespace Com.Jackseb.Zombie
 		public float sensitivity;
 		public float maxAngle;
 
-		private Quaternion camCenter;
+		Quaternion camCenter;
 
 		void Start()
 		{

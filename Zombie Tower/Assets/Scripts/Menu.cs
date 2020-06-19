@@ -4,23 +4,26 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class Menu : MonoBehaviour
+namespace Com.Jackseb.Zombie
 {
-	public string version;
-	public TextMeshProUGUI versionText;
-	
-    void Start()
-    {
-		versionText.SetText(version);
-    }
-
-    void Update()
-    {
-        
-    }
-
-	public void StartGame()
+	public class Menu : MonoBehaviour
 	{
-		SceneManager.LoadScene("SampleScene");
+		public string version;
+		public TextMeshProUGUI versionText;
+
+		void Start()
+		{
+			versionText.SetText(version);
+		}
+
+		void Update()
+		{
+
+		}
+
+		public void StartGame()
+		{
+			SceneManager.LoadScene("SampleScene");
+		}
 	}
 }

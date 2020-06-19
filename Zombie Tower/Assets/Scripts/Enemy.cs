@@ -3,20 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+namespace Com.Jackseb.Zombie
 {
-	NavMeshAgent nm;
-	public Transform target;
-	
-	// Start is called before the first frame update
-    void Start()
-    {
-		nm = GetComponent<NavMeshAgent>();
-    }
+	public class Enemy : MonoBehaviour
+	{
+		public int damage;
+		public float attackCooldown;
+		public LayerMask canBeAttacked;
+		public Transform center;
 
-    // Update is called once per frame
-    void Update()
-    {
-		nm.SetDestination(target.position);
+		NavMeshAgent nm;
+		Transform target;
+		float currentCooldown;
+
+
+		// Start is called before the first frame update
+		void Start()
+		{
+			nm = GetComponent<NavMeshAgent>();
+
+		}
+
+		// Update is called once per frame
+		void Update()
+		{
+			if (GameObject.Find("Player(Clone)") != null) target = GameObject.Find("Player(Clone)").transform;
+
+			if (target != null)
+			{
+				nm.SetDestination(target.position);
+
+				if (currentCooldown <= 0)
+				{
+					Attack();
+				}
+
+				// Cooldown
+				if (currentCooldown > 0) currentCooldown -= Time.deltaTime;
+			}
+		}
+
+		void Attack()
+		{
+			RaycastHit _hit;
+			if (Physics.Raycast(center.position, center.forward, out _hit, 1f, canBeAttacked))
+			{
+				_hit.collider.transform.root.GetComponent<Motion>().TakeDamage(damage);
+			}
+
+			currentCooldown = attackCooldown;
+		}
 	}
 }

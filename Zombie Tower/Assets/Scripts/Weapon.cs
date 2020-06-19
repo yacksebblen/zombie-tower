@@ -12,9 +12,9 @@ namespace Com.Jackseb.Zombie
 		public GameObject bulletHolePrefab;
 		public LayerMask canBeShot;
 
-		private float currentCooldown;
-		private int currentIndex;
-		private GameObject currentWeapon;
+		float currentCooldown;
+		int currentIndex;
+		GameObject currentWeapon;
 
 		void Update()
 		{
@@ -64,9 +64,13 @@ namespace Com.Jackseb.Zombie
 			RaycastHit hit;
 			if (Physics.Raycast(normalCam.position, _bloom, out hit, 1000f))
 			{
-				GameObject _newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity) as GameObject;
-				_newHole.transform.LookAt(hit.point + hit.normal);
-				Destroy(_newHole, 5f);
+				// Bullet holes
+				if (hit.collider.gameObject.layer != 11)
+				{
+					GameObject _newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity) as GameObject;
+					_newHole.transform.LookAt(hit.point + hit.normal);
+					Destroy(_newHole, 5f);
+				}
 
 				Debug.DrawRay(normalCam.position, normalCam.transform.forward * hit.distance, Color.yellow);
 			}

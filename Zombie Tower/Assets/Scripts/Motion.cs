@@ -14,18 +14,21 @@ namespace Com.Jackseb.Zombie
 		public Transform groundDetect;
 		public LayerMask ground;
 
-		private Rigidbody rig;
+		Rigidbody rig;
 
-		private int currentHealth;
+		int currentHealth;
 
-		private void Start()
+		GameManager gm;
+
+		void Start()
 		{
-			Camera.main.enabled = false;
+			gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+
 			rig = GetComponent<Rigidbody>();
 			currentHealth = maxHealth;
 		}
 
-		private void Update()
+		void Update()
 		{
 			// Axes
 			float _hMove = Input.GetAxisRaw("Horizontal");
@@ -77,11 +80,18 @@ namespace Com.Jackseb.Zombie
 		public void TakeDamage(int _damage)
 		{
 			currentHealth -= _damage;
+			Debug.Log(currentHealth);
 
 			if (currentHealth <= 0)
 			{
-				Debug.Log("YOU DIED");
+				Die();
 			}
+		}
+
+		public void Die()
+		{
+			gm.Spawn();
+			Destroy(transform.root.gameObject);
 		}
 	}
 }
