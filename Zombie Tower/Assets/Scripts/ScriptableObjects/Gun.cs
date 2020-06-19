@@ -7,8 +7,17 @@ namespace Com.Jackseb.Zombie
 	[CreateAssetMenu(fileName = "New Gun", menuName = "Gun")]
 	public class Gun : ScriptableObject
 	{
+		[Header("General")]
 		public string gunName;
-		public float firerate;
 		public GameObject prefab;
+
+		[Header("Shooting")]
+		public float damage;
+		public float firerate;
+		public float spread;
+
+		[Header("Recoil")]
+		public float movementRecoil;
+		public float rotationRecoil;
 	}
 }

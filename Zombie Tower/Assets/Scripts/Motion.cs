@@ -9,16 +9,20 @@ namespace Com.Jackseb.Zombie
 		public float speed;
 		public float walkModifier;
 		public float jumpForce;
-		//public Camera normalCam;
+		public int maxHealth;
+
 		public Transform groundDetect;
 		public LayerMask ground;
 
 		private Rigidbody rig;
 
+		private int currentHealth;
+
 		private void Start()
 		{
 			Camera.main.enabled = false;
 			rig = GetComponent<Rigidbody>();
+			currentHealth = maxHealth;
 		}
 
 		private void Update()
@@ -68,6 +72,16 @@ namespace Com.Jackseb.Zombie
 			Vector3 _targetVelocity = transform.TransformDirection(_direction) * _adjustedSpeed * Time.deltaTime;
 			_targetVelocity.y = rig.velocity.y;
 			rig.velocity = _targetVelocity;
+		}
+
+		public void TakeDamage(int _damage)
+		{
+			currentHealth -= _damage;
+
+			if (currentHealth <= 0)
+			{
+				Debug.Log("YOU DIED");
+			}
 		}
 	}
 }
