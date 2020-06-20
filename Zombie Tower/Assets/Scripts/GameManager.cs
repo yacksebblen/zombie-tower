@@ -18,7 +18,10 @@ namespace Com.Jackseb.Zombie
 		public State currentState;
 
 		public GameObject playerPrefab;
-		public Transform[] spawnPoints;
+		public Transform playerSpawn;
+
+		public GameObject zombiePrefab;
+		public Transform[] zombieSpawnPoints;
 
 		[SerializeField]
 		bool spawnPlayer = true;
@@ -32,13 +35,24 @@ namespace Com.Jackseb.Zombie
 
 		void Update()
 		{
-
+			if (Input.GetKeyDown(KeyCode.U))
+			{
+				SpawnZombie(1);
+			}
 		}
 
 		public void Spawn()
 		{
-			int num = Random.Range(0, 3);
-			Instantiate(playerPrefab, spawnPoints[num].position, spawnPoints[num].rotation);
+			Instantiate(playerPrefab, playerSpawn.position, playerSpawn.rotation);
+		}
+
+		public void SpawnZombie(int numOfTimes)
+		{
+			for (int i = 0; i < numOfTimes; i++)
+			{
+				int num = Random.Range(0, zombieSpawnPoints.Length);
+				Instantiate(zombiePrefab, zombieSpawnPoints[num].position, zombieSpawnPoints[num].rotation);
+			}
 		}
 	}
 }

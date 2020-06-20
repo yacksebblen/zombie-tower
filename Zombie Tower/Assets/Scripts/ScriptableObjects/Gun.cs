@@ -12,7 +12,7 @@ namespace Com.Jackseb.Zombie
 		public GameObject prefab;
 
 		[Header("Shooting")]
-		public float damage;
+		public int damage;
 		public float firerate;
 		public float spread;
 

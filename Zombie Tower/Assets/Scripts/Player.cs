@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Com.Jackseb.Zombie
 {
-	public class Motion : MonoBehaviour
+	public class Player : MonoBehaviour
 	{
 		public float speed;
 		public float walkModifier;
@@ -17,6 +17,7 @@ namespace Com.Jackseb.Zombie
 		Rigidbody rig;
 
 		int currentHealth;
+		Transform uiHealthBar;
 
 		GameManager gm;
 
@@ -26,6 +27,9 @@ namespace Com.Jackseb.Zombie
 
 			rig = GetComponent<Rigidbody>();
 			currentHealth = maxHealth;
+
+			uiHealthBar = GameObject.Find("HUD/Health/Bar").transform;
+			RefreshHealth();
 		}
 
 		void Update()
@@ -48,6 +52,9 @@ namespace Com.Jackseb.Zombie
 			{
 				rig.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
 			}
+
+			//UI Refreshes
+			RefreshHealth();
 		}
 
 		void FixedUpdate()
@@ -77,10 +84,16 @@ namespace Com.Jackseb.Zombie
 			rig.velocity = _targetVelocity;
 		}
 
+		void RefreshHealth()
+		{
+			float _healthRatio = (float)currentHealth / (float)maxHealth;
+			uiHealthBar.localScale = Vector3.Lerp(uiHealthBar.localScale, new Vector3(_healthRatio, 1, 1), Time.deltaTime * 8f);
+		}
+
 		public void TakeDamage(int _damage)
 		{
 			currentHealth -= _damage;
-			Debug.Log(currentHealth);
+			RefreshHealth();
 
 			if (currentHealth <= 0)
 			{

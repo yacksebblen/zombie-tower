@@ -62,17 +62,20 @@ namespace Com.Jackseb.Zombie
 
 			// Raycast
 			RaycastHit hit;
-			if (Physics.Raycast(normalCam.position, _bloom, out hit, 1000f))
+			if (Physics.Raycast(normalCam.position, _bloom, out hit, 1000f, canBeShot))
 			{
 				// Bullet holes
-				if (hit.collider.gameObject.layer != 11)
+				Debug.Log(hit.collider.gameObject);
+				if (hit.collider.gameObject.layer == 11)
+				{
+					hit.collider.transform.root.GetComponent<Enemy>().ZombieTakeDamage(loadout[currentIndex].damage);
+				}
+				else
 				{
 					GameObject _newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity) as GameObject;
 					_newHole.transform.LookAt(hit.point + hit.normal);
 					Destroy(_newHole, 5f);
 				}
-
-				Debug.DrawRay(normalCam.position, normalCam.transform.forward * hit.distance, Color.yellow);
 			}
 
 			// Gun FX
