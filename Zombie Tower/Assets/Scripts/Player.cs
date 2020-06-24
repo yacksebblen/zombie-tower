@@ -6,18 +6,23 @@ namespace Com.Jackseb.Zombie
 {
 	public class Player : MonoBehaviour
 	{
+		[Header("Stats")]
 		public float speed;
 		public float walkModifier;
 		public float jumpForce;
-		public int maxHealth;
+		public float maxHealth;
+		public float regenWaitTime;
 
+		[Header("Other")]
 		public Transform groundDetect;
 		public LayerMask ground;
 
 		Rigidbody rig;
 
-		int currentHealth;
+		float currentHealth;
 		Transform uiHealthBar;
+
+		float combatCooldown;
 
 		GameManager gm;
 
@@ -53,8 +58,24 @@ namespace Com.Jackseb.Zombie
 				rig.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
 			}
 
-			//UI Refreshes
+			// UI Refreshes
 			RefreshHealth();
+
+			// Combat regen
+			if (Mathf.Abs(_hMove) > 0 || Mathf.Abs(_vMove) > 0 || !isGrounded)
+			{
+				combatCooldown = regenWaitTime;
+			}
+
+			if (combatCooldown <= 0)
+			{
+				float newHealth = Mathf.Ceil(currentHealth / 20) * 20;
+				currentHealth = Mathf.Lerp(currentHealth, newHealth, Time.deltaTime * 8f);
+			}
+			else
+			{
+				combatCooldown -= Time.deltaTime;
+			}
 		}
 
 		void FixedUpdate()
@@ -94,6 +115,12 @@ namespace Com.Jackseb.Zombie
 		{
 			currentHealth -= _damage;
 			RefreshHealth();
+
+			// If player taking damage, put the player in combat
+			if (_damage > 0)
+			{
+				combatCooldown = regenWaitTime;
+			}
 
 			if (currentHealth <= 0)
 			{
