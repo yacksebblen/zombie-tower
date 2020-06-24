@@ -16,6 +16,15 @@ namespace Com.Jackseb.Zombie
 		int currentIndex;
 		GameObject currentWeapon;
 
+		Player pl;
+		GameManager gm;
+
+		void Start()
+		{
+			pl = GetComponent<Player>();
+			gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+		}
+
 		void Update()
 		{
 			if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -75,6 +84,15 @@ namespace Com.Jackseb.Zombie
 					GameObject _newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity) as GameObject;
 					_newHole.transform.LookAt(hit.point + hit.normal);
 					Destroy(_newHole, 5f);
+					//Alert zombies
+					if (gm.currentState == GameManager.State.Zombies)
+					{
+						Collider[] hitColliders = Physics.OverlapSphere(_newHole.transform.position, pl.bulletHoleSoundRadius, pl.zombieLayerMask);
+						for (int i = 0; i < hitColliders.Length; i++)
+						{
+							hitColliders[i].transform.root.GetComponent<Enemy>().SetTarget(pl.transform);
+						}
+					}
 				}
 			}
 
@@ -84,6 +102,16 @@ namespace Com.Jackseb.Zombie
 
 			// Cooldown
 			currentCooldown = loadout[currentIndex].firerate;
+
+			//Alert zombies
+			if (gm.currentState == GameManager.State.Zombies)
+			{
+				Collider[] hitColliders = Physics.OverlapSphere(pl.transform.position, pl.shootSoundRadius, pl.zombieLayerMask);
+				for (int i = 0; i < hitColliders.Length; i++)
+				{
+					hitColliders[i].transform.root.GetComponent<Enemy>().SetTarget(pl.transform);
+				}
+			}
 		}
 	}
 }

@@ -24,10 +24,14 @@ namespace Com.Jackseb.Zombie
 		bool stuckInPlayer = false;
 		int currentHealth;
 
+		GameManager gm;
+
 
 		// Start is called before the first frame update
 		void Start()
 		{
+			gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+
 			nm = GetComponent<NavMeshAgent>();
 			currentHealth = maxHealth;
 		}
@@ -35,7 +39,8 @@ namespace Com.Jackseb.Zombie
 		// Update is called once per frame
 		void Update()
 		{
-			if (GameObject.Find("Player(Clone)") != null) target = GameObject.Find("Player(Clone)").transform;
+			// sets player as target automatically
+			// if (GameObject.Find("Player(Clone)") != null) target = GameObject.Find("Player(Clone)").transform;
 
 			if (target != null)
 			{
@@ -49,6 +54,11 @@ namespace Com.Jackseb.Zombie
 				// Cooldown
 				if (currentCooldown > 0) currentCooldown -= Time.deltaTime;
 			}
+		}
+
+		public void SetTarget(Transform targ)
+		{
+			target = targ;
 		}
 
 		void Attack()
@@ -71,6 +81,8 @@ namespace Com.Jackseb.Zombie
 		{
 			currentHealth -= _damage;
 
+			target = GameObject.Find("Player(Clone)").transform;
+
 			if (currentHealth <= 0)
 			{
 				Die();
@@ -79,6 +91,7 @@ namespace Com.Jackseb.Zombie
 
 		public void Die()
 		{
+			gm.ChangeZombieCount(-1);
 			Destroy(transform.root.gameObject);
 		}
 	}

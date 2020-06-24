@@ -13,9 +13,15 @@ namespace Com.Jackseb.Zombie
 		public float maxHealth;
 		public float regenWaitTime;
 
+		[Header("Alerting Zombies")]
+		public float runSoundRadius;
+		public float shootSoundRadius;
+		public float bulletHoleSoundRadius;
+
 		[Header("Other")]
 		public Transform groundDetect;
 		public LayerMask ground;
+		public LayerMask zombieLayerMask;
 
 		Rigidbody rig;
 
@@ -24,10 +30,12 @@ namespace Com.Jackseb.Zombie
 
 		float combatCooldown;
 
+		Weapon wpn;
 		GameManager gm;
 
 		void Start()
 		{
+			wpn = GetComponent<Weapon>();
 			gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 			rig = GetComponent<Rigidbody>();
@@ -51,6 +59,15 @@ namespace Com.Jackseb.Zombie
 			bool isGrounded = Physics.Raycast(groundDetect.position, Vector3.down, 0.1f, ground);
 			bool isJumping = jump && isGrounded;
 			bool isWalking = walk && !isJumping && isGrounded;
+
+			if (gm.currentState == GameManager.State.Zombies && !isWalking)
+			{
+				Collider[] hitColliders = Physics.OverlapSphere(transform.position, runSoundRadius, zombieLayerMask);
+				for (int i = 0; i < hitColliders.Length; i++)
+				{
+					hitColliders[i].transform.root.GetComponent<Enemy>().SetTarget(transform);
+				}
+			}
 
 			// Jumping
 			if (isJumping)

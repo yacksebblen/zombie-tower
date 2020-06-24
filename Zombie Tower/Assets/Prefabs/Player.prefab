@@ -450,10 +450,16 @@ MonoBehaviour:
   jumpForce: 5.5
   maxHealth: 100
   regenWaitTime: 3
+  runSoundRadius: 5
+  shootSoundRadius: 10
+  bulletHoleSoundRadius: 2
   groundDetect: {fileID: 2349089147270206594}
   ground:
     serializedVersion: 2
     m_Bits: 256
+  zombieLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!114 &2349089148704129250
 MonoBehaviour:
   m_ObjectHideFlags: 0
