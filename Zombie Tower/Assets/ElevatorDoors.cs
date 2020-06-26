@@ -38,14 +38,15 @@ namespace Com.Jackseb.Zombie
 		{
 			if (other.gameObject.layer == 9 && gm.currentState == GameManager.State.Elevator)
 			{
-				open = false;
 				StartCoroutine(FloorDelay());
 			}
 		}
 
 		IEnumerator FloorDelay()
 		{
-			yield return new WaitForSeconds(2);
+			yield return new WaitForSeconds(0.5f);
+			open = false;
+			yield return new WaitForSeconds(1f);
 			gm.NewFloor();
 		}
 

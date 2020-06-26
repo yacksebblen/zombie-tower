@@ -23,6 +23,8 @@ namespace Com.Jackseb.Zombie
 		{
 			pl = GetComponent<Player>();
 			gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+			Equip(0);
 		}
 
 		void Update()

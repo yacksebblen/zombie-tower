@@ -9,7 +9,7 @@ namespace Com.Jackseb.Zombie
 		public static bool cursorLocked = true;
 
 		public Transform player;
-		public Transform cams;
+		public Transform[] cams;
 		public Transform weapon;
 
 		public float sensitivity;
@@ -19,7 +19,7 @@ namespace Com.Jackseb.Zombie
 
 		void Start()
 		{
-			camCenter = cams.localRotation; // set rotation origin for camera
+			camCenter = cams[0].localRotation; // set rotation origin for camera
 		}
 
 		void Update()
@@ -34,14 +34,17 @@ namespace Com.Jackseb.Zombie
 		{
 			float _input = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 			Quaternion _adj = Quaternion.AngleAxis(_input, -Vector3.right);
-			Quaternion _delta = cams.localRotation * _adj;
+			Quaternion _delta = cams[0].localRotation * _adj;
 
 			if (Quaternion.Angle(camCenter, _delta) < maxAngle)
 			{
-				cams.localRotation = _delta;
+				foreach (Transform t in cams)
+				{
+					t.localRotation = _delta;
+				}
 			}
 
-			weapon.rotation = cams.rotation;
+			weapon.rotation = cams[0].rotation;
 		}
 
 		void SetX()
