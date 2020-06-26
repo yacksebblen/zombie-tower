@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 namespace Com.Jackseb.Zombie
@@ -15,6 +16,8 @@ namespace Com.Jackseb.Zombie
 		}
 
 		public State currentState;
+
+		public ElevatorDoors elvDoors;
 
 		public GameObject playerPrefab;
 		public Transform playerSpawn;
@@ -32,6 +35,8 @@ namespace Com.Jackseb.Zombie
 		{
 			currentState = State.Pregame;
 
+			elvDoors.open = false;
+
 			if (spawnPlayer) Spawn();
 
 			uiState = GameObject.Find("HUD/GameInfo/State").transform;
@@ -42,10 +47,11 @@ namespace Com.Jackseb.Zombie
 		void Update()
 		{
 			uiState.GetComponent<TextMeshProUGUI>().SetText(currentState.ToString());
-			
-			if (currentZombieCount == 0)
+
+			if ((currentZombieCount == 0) && (currentState == State.Zombies))
 			{
 				currentState = State.Elevator;
+				elvDoors.open = true;
 			}
 
 			// test code
@@ -62,6 +68,7 @@ namespace Com.Jackseb.Zombie
 
 		public void SpawnZombie(int numOfTimes)
 		{
+			currentZombieCount = 0;
 			for (int i = 0; i < zombieSpawnPoints.Length; i++)
 			{
 				zombieSpawnPoints[i].gameObject.SetActive(true);
@@ -74,6 +81,7 @@ namespace Com.Jackseb.Zombie
 				{
 					Instantiate(zombiePrefab, zombieSpawnPoints[num].position, zombieSpawnPoints[num].rotation);
 					zombieSpawnPoints[num].gameObject.SetActive(false);
+					ChangeZombieCount(1);
 				}
 			}
 		}
@@ -86,9 +94,16 @@ namespace Com.Jackseb.Zombie
 		IEnumerator StateDelay(float sec)
 		{
 			yield return new WaitForSeconds(sec);
+			int num = Random.Range(3, 9);
+			SpawnZombie(num);
+			elvDoors.open = true;
 			currentState = State.Zombies;
-			currentZombieCount = Random.Range(3, 9);
-			SpawnZombie(currentZombieCount);
+		}
+
+		public void NewFloor()
+		{
+			Floor newFloor = FloorLibrary.RandomFloor(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(newFloor.sceneIndex);
 		}
 	}
 }

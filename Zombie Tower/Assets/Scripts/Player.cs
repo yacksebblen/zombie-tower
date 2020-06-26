@@ -11,7 +11,6 @@ namespace Com.Jackseb.Zombie
 		public float walkModifier;
 		public float jumpForce;
 		public float maxHealth;
-		public float regenWaitTime;
 
 		[Header("Alerting Zombies")]
 		public float runSoundRadius;
@@ -27,8 +26,6 @@ namespace Com.Jackseb.Zombie
 
 		float currentHealth;
 		Transform uiHealthBar;
-
-		float combatCooldown;
 
 		Weapon wpn;
 		GameManager gm;
@@ -78,20 +75,10 @@ namespace Com.Jackseb.Zombie
 			// UI Refreshes
 			RefreshHealth();
 
-			// Combat regen
-			if (Mathf.Abs(_hMove) > 0 || Mathf.Abs(_vMove) > 0 || !isGrounded)
-			{
-				combatCooldown = regenWaitTime;
-			}
-
-			if (combatCooldown <= 0)
+			if (gm.currentState == GameManager.State.Elevator)
 			{
 				float newHealth = Mathf.Ceil(currentHealth / 20) * 20;
 				currentHealth = Mathf.Lerp(currentHealth, newHealth, Time.deltaTime * 8f);
-			}
-			else
-			{
-				combatCooldown -= Time.deltaTime;
 			}
 		}
 
@@ -132,12 +119,6 @@ namespace Com.Jackseb.Zombie
 		{
 			currentHealth -= _damage;
 			RefreshHealth();
-
-			// If player taking damage, put the player in combat
-			if (_damage > 0)
-			{
-				combatCooldown = regenWaitTime;
-			}
 
 			if (currentHealth <= 0)
 			{

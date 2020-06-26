@@ -23,7 +23,7 @@ namespace Com.Jackseb.Zombie
 
 		public void StartGame()
 		{
-			SceneManager.LoadScene("SampleScene");
+			SceneManager.LoadScene(FloorLibrary.RandomFloor(0).sceneIndex);
 		}
 	}
 }
