@@ -36,7 +36,7 @@ namespace Com.Jackseb.Zombie
 			gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 			rig = GetComponent<Rigidbody>();
-			currentHealth = maxHealth;
+			currentHealth = PlayerPrefs.GetFloat("health", 100);
 
 			uiHealthBar = GameObject.Find("HUD/Health/Bar").transform;
 			RefreshHealth();
@@ -73,13 +73,13 @@ namespace Com.Jackseb.Zombie
 			}
 
 			// UI Refreshes
-			RefreshHealth();
-
 			if (gm.currentState == GameManager.State.Elevator)
 			{
 				float newHealth = Mathf.Ceil(currentHealth / 20) * 20;
 				currentHealth = Mathf.Lerp(currentHealth, newHealth, Time.deltaTime * 8f);
 			}
+
+			RefreshHealth();
 		}
 
 		void FixedUpdate()
@@ -113,6 +113,7 @@ namespace Com.Jackseb.Zombie
 		{
 			float _healthRatio = (float)currentHealth / (float)maxHealth;
 			uiHealthBar.localScale = Vector3.Lerp(uiHealthBar.localScale, new Vector3(_healthRatio, 1, 1), Time.deltaTime * 8f);
+			PlayerPrefs.SetFloat("health", currentHealth);
 		}
 
 		public void TakeDamage(int _damage)

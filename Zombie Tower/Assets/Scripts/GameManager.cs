@@ -102,7 +102,7 @@ namespace Com.Jackseb.Zombie
 
 		public void NewFloor()
 		{
-			Floor newFloor = FloorLibrary.RandomFloor(SceneManager.GetActiveScene().buildIndex);
+			Floor newFloor = FloorLibrary.RandomFloor(SceneManager.GetActiveScene().buildIndex - 1);
 			SceneManager.LoadScene(newFloor.sceneIndex);
 		}
 	}

@@ -14,6 +14,8 @@ namespace Com.Jackseb.Zombie
 		void Start()
 		{
 			versionText.SetText(version);
+
+			PlayerPrefs.SetFloat("health", 100);
 		}
 
 		void Update()
